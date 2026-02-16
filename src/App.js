@@ -1,5 +1,5 @@
 import './App.css';
-
+import ExpenseList from './components/ExpenseList.tsx';
 function App() {
   return (
     <div className="App">
@@ -8,6 +8,7 @@ function App() {
           HEllo World! Welcome to Smart Expense Tracker!
         </p>
       </header>
+      <ExpenseList/>
     </div>
   );
 }
