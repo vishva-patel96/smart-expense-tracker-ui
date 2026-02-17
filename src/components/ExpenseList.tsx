@@ -9,8 +9,8 @@ interface Expense {
     date: string;
 }
 // ExpenseList component to display a list of expenses
-const ExpenseList: React.FC = () =>{
-    const navigate = useNavigate();
+function ExpenseList()
+{    const navigate = useNavigate();
 
   // Static expense data
   const expenses: Expense[] = [
