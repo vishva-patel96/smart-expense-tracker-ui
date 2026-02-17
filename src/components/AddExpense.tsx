@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-
+// AddExpense component to provide a blank page for adding new expenses
 const AddExpense: React.FC = () => {
     const navigate = useNavigate(); 
     return (
