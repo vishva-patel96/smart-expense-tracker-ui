@@ -7,7 +7,7 @@ function AddExpense() {
     const[amount, setAmount]= useState("");
     const[date, setDate] =useState("");
     const [category, setCategory] = useState("");
-};
+
 
     // Static category list
     const categories = [
@@ -121,5 +121,6 @@ function AddExpense() {
         </div>
     );
 }
+
 
 export default AddExpense;
