@@ -6,11 +6,12 @@ function AddExpense() {
     const navigate = useNavigate(); 
     const[amount, setAmount]= useState("");
     const[date, setDate] =useState("");
+    // State for category management
     const [category, setCategory] = useState("");
-
-
-    // Static category list
-    const categories = [
+    const [showAddCategory, setShowAddCategory] = useState(false);
+    const [newCategoryName, setNewCategoryName] = useState("");
+    // Static list of categories (can be fetched from API in real implementation)
+    const [categories, setCategories] = useState([
         "Food & Dining",
         "Transportation",
         "Shopping",
@@ -21,7 +22,24 @@ function AddExpense() {
         "Travel",
         "Groceries",
         "Other"
-    ];
+    ]);
+    const handleAddCategory =() =>{
+        if (!newCategoryName.trim()) {
+            alert("Please enter a category name");
+            return;
+        }
+
+        if (categories.includes(newCategoryName)) {
+            alert("Category already exists!");
+            return;
+        }
+        //spread operator to create new array with added category
+        setCategories([...categories, newCategoryName]);
+        setCategory(newCategoryName); 
+        setNewCategoryName("");
+        setShowAddCategory(false);
+    }
+
     function handleSubmit (){
         //validation check
         if(!amount || !date || !category)
@@ -82,9 +100,69 @@ function AddExpense() {
                 
                 {/* Category Dropdown */}
                 <div style={{ display: "flex", flexDirection: "column" }}>
-                    <label htmlFor="category" style={{ marginBottom: "5px", fontWeight: "bold" }}>
-                        Category:
-                    </label>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "5px" }}>
+                        <label htmlFor="category" style={{ fontWeight: "bold" }}>
+                            Category:
+                        </label>
+                        {/*Add New Category Button */}
+                        <button
+                            type="button"
+                            onClick={() => setShowAddCategory(!showAddCategory)}
+                            style={{
+                                padding: "5px 10px",
+                                fontSize: "12px",
+                                backgroundColor: "#2196F3",
+                                color: "white",
+                                border: "none",
+                                borderRadius: "4px",
+                                cursor: "pointer"
+                            }}
+                        >
+                            {showAddCategory ? "Cancel" : "+ Add New"}
+                        </button>
+                    </div>
+                    {/* Show add category form when button is clicked */}
+                    {showAddCategory && (
+                        <div style={{
+                            display: "flex",
+                            gap: "8px",
+                            marginBottom: "10px",
+                            padding: "10px",
+                            backgroundColor: "#f0f0f0",
+                            borderRadius: "4px"
+                        }}>
+                            <input
+                                type="text"
+                                value={newCategoryName}
+                                {/* onChange handler for new category input */}
+                                onChange={(e) => setNewCategoryName(e.target.value)}
+                                placeholder="Enter new category"
+                                style={{
+                                    flex: 1,
+                                    padding: "8px",
+                                    fontSize: "14px",
+                                    borderRadius: "4px",
+                                    border: "1px solid #ccc"
+                                }}
+                            />
+                            <button
+                                type="button"
+                                onClick={handleAddCategory}
+                                style={{
+                                    padding: "8px 12px",
+                                    fontSize: "14px",
+                                    backgroundColor: "#4CAF50",
+                                    color: "white",
+                                    border: "none",
+                                    borderRadius: "4px",
+                                    cursor: "pointer"
+                                }}
+                            >
+                                Add
+                            </button>
+                        </div>
+                    )}
+
                     <select
                         id="category"
                         value={category}
@@ -99,6 +177,7 @@ function AddExpense() {
                         ))}
                     </select>
                 </div>
+
                 
                 {/* Submit Button */}
                 <button

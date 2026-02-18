@@ -1,6 +1,6 @@
 import './App.css';
-import ExpenseList from './components/ExpenseList.tsx';
-import AddExpense from './components/AddExpense.tsx';
+import ExpenseList from './components/ExpenseList.jsx';
+import AddExpense from './components/AddExpense.jsx';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 function App() {
   return (
