@@ -104,7 +104,6 @@ function AddExpense() {
                         <label htmlFor="category" style={{ fontWeight: "bold" }}>
                             Category:
                         </label>
-                        {/*Add New Category Button */}
                         <button
                             type="button"
                             onClick={() => setShowAddCategory(!showAddCategory)}
@@ -121,7 +120,7 @@ function AddExpense() {
                             {showAddCategory ? "Cancel" : "+ Add New"}
                         </button>
                     </div>
-                    {/* Show add category form when button is clicked */}
+                    /* Show add category form when button is clicked */
                     {showAddCategory && (
                         <div style={{
                             display: "flex",
@@ -134,7 +133,7 @@ function AddExpense() {
                             <input
                                 type="text"
                                 value={newCategoryName}
-                                {/* onChange handler for new category input */}
+                                /* onChange handler for new category input */
                                 onChange={(e) => setNewCategoryName(e.target.value)}
                                 placeholder="Enter new category"
                                 style={{
