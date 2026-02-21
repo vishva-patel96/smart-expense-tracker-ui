@@ -1,53 +1,95 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { expenseService } from "../services/api";
 
-
-interface Expense {
-    id : number;
-    category: string;
-    amount: number;
-    date: string;
-}
 // ExpenseList component to display a list of expenses
 function ExpenseList()
 {    const navigate = useNavigate();
 
-  // Static expense data
-  const expenses: Expense[] = [
-    { id: 1, category: 'Food', amount: 45.50, date: '2026-02-10' },
-    { id: 2, category: 'Transportation', amount: 25.00, date: '2026-02-12' },
-    { id: 3, category: 'Entertainment', amount: 60.00, date: '2026-02-13' },
-    { id: 4, category: 'Utilities', amount: 120.00, date: '2026-02-14' },
-    { id: 5, category: 'Shopping', amount: 89.99, date: '2026-02-15' },
-  ];
-// Handler for navigating to the AddExpense page
-  const handleAddExpense =() =>{
-    navigate('/add-expense');
-  };
-  return(
+  //usestate
+  const[expenses, setExpenses] = useState([]);//empty array intialize
+  const[loading, setLoading] =useState(true);
+  const[error, setError] =useState(null);
 
-    <div style={{ padding: '20px', maxWidth: '800px', margin: '0 auto' }}>
-        <h2>Expense List</h2>
+  useEffect(() => {
+    fetchExpense();
+  },[]);
+
+  const fetchExpense =async ()  =>
+  {
+    try{
+      setLoading(true);
+      setError(null);
+      //Api call
+      const data =await expenseService.getAllExpenses();
+      setExpenses(data);// update state with data
+      setLoading(false);
+    }
+    catch(err)
+    {
+      console.log("failed to load data",err);
+      setError("Failed to load data, please try again");
+      setLoading(false);
+    }
+  }
+
+
+  
+  // Handler for navigating to the AddExpense page
+  const handleAddExpense =() =>{
+  navigate('/add-expense');
+    };
+
+
+    
+  // Loading state UI
+    if (loading) {
+      return (
+        <div style={{ padding: '20px', textAlign: 'center' }}>
+          <p>Loading expenses...</p>
+        </div>
+      );
+    }
+
+    // Error state UI
+    if (error) {
+      return (
+        <div style={{ padding: '20px', textAlign: 'center', color: 'red' }}>
+          <p>{error}</p>
+          <button onClick={fetchExpense}>Retry</button>
+        </div>
+      );
+    }
+
+  return(
+  <div style={{ padding: '20px', maxWidth: '800px', margin: '0 auto' }}>
+      <h2>Expense List</h2>
+      
+      {/* Show message if no expenses */}
+      {expenses.length === 0 ? (
+        <p>No expenses yet. Add your first expense!</p>
+      ) : (
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-            <thead>
+          <thead>
             <tr style={{ borderBottom: '2px solid #333' }}>
-                <th style={{ padding: '12px', textAlign: 'left' }}>ID</th>
-                <th style={{ padding: '12px', textAlign: 'left' }}>Category</th>
-                <th style={{ padding: '12px', textAlign: 'left' }}>Amount</th>
-                <th style={{ padding: '12px', textAlign: 'left' }}>Date</th>
+              <th style={{ padding: '12px', textAlign: 'left' }}>ID</th>
+              <th style={{ padding: '12px', textAlign: 'left' }}>Category</th>
+              <th style={{ padding: '12px', textAlign: 'left' }}>Amount</th>
+              <th style={{ padding: '12px', textAlign: 'left' }}>Date</th>
             </tr>
-            </thead>
-            <tbody>
-                {expenses.map((expense) => (
-                    <tr key={expense.id}>
-                        <td>{expense.id}</td>
-                        <td>{expense.category}</td>
-                        <td>{expense.amount}</td>
-                        <td>{expense.date}</td>
-                    </tr>
-                ))}
-            </tbody>
+          </thead>
+          <tbody>
+            {expenses.map((expense) => (
+              <tr key={expense.id}>
+                <td style={{ padding: '12px' }}>{expense.id}</td>
+                <td style={{ padding: '12px' }}>{expense.category}</td>
+                <td style={{ padding: '12px' }}>${expense.amount.toFixed(2)}</td>
+                <td style={{ padding: '12px' }}>{expense.date}</td>
+              </tr>
+            ))}
+          </tbody>
         </table>
+      )}
         <button 
             onClick={handleAddExpense}
             style={{

@@ -120,7 +120,7 @@ function AddExpense() {
                             {showAddCategory ? "Cancel" : "+ Add New"}
                         </button>
                     </div>
-                    /* Show add category form when button is clicked */
+                    {/* Show add category form when button is clicked */}
                     {showAddCategory && (
                         <div style={{
                             display: "flex",
