@@ -35,22 +35,49 @@ function AddExpense() {
         }
     };
 
-    const handleAddCategory =() =>{
-        if (!newCategoryName.trim()) {
-            alert("Please enter a category name");
-            return;
-        }
+    const handleAddCategory = async () => {
+    if (!newCategoryName.trim()) {
+        alert("Please enter a category name");
+        return;
+    }
 
-        if (categories.includes(newCategoryName)) {
-            alert("Category already exists!");
-            return;
-        }
-        //spread operator to create new array with added category
-        setCategories([...categories, newCategoryName]);
-        setCategory(newCategoryName); 
+    // Check if category already exists
+    const categoryExists = categories.some(
+        cat => (typeof cat === 'object' ? cat.name : cat) === newCategoryName
+    );
+
+    if (categoryExists) {
+        alert("Category already exists!");
+        return;
+    }
+
+    try {
+        setLoading(true);
+        
+        // ✅ Call backend API to save category
+        const response = await categoryService.createCategory(newCategoryName);
+        
+        console.log("Category created:", response);
+        
+        // Add the new category to local state
+        const newCategory = { 
+            id: response.id, // Use the ID from backend
+            name: newCategoryName 
+        };
+        
+        setCategories([...categories, newCategory]);
+        setCategory(newCategoryName);
         setNewCategoryName("");
         setShowAddCategory(false);
+        setLoading(false);
+        
+        alert("Category added successfully!");
+    } catch (err) {
+        console.error("Failed to add category:", err);
+        alert("Failed to add category. Please try again.");
+        setLoading(false);
     }
+};
 
     const handleSubmit = async(e) =>
     {

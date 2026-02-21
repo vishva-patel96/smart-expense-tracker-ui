@@ -68,4 +68,13 @@ export const categoryService = {
       throw error;
     }
   },
+  createCategory: async (categoryName) => {
+    try {
+      const response = await apiClient.post('/categories', { name: categoryName });
+      return response.data;
+    } catch (error) {
+      console.error('Error creating category:', error);
+      throw error;
+    }
+  },
 };
