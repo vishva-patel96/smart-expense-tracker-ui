@@ -82,7 +82,7 @@ function ExpenseList()
             {expenses.map((expense) => (
               <tr key={expense.id}>
                 <td style={{ padding: '12px' }}>{expense.id}</td>
-                <td style={{ padding: '12px' }}>{expense.category}</td>
+                <td style={{ padding: '12px' }}>{expense.categoryName || expense.category?.name || 'Unknown'}</td>
                 <td style={{ padding: '12px' }}>${expense.amount.toFixed(2)}</td>
                 <td style={{ padding: '12px' }}>{expense.date}</td>
               </tr>
